@@ -2,26 +2,26 @@
   <menuitem id="menu_dashboard_blti_root"
             name="Dashboard BLTI"
             sequence="10"
-            groups="dashboard_blti.group_dashboard_blti_management"/>
+            groups="dashboard_blti.group_dashboard_management"/>
 
   <menuitem id="menu_dashboard_blti_exec"
             name="Executive Dashboard"
             parent="menu_dashboard_blti_root"
             action="dashboard_blti.action_dashboard_blti_executive"
             sequence="10"
-            groups="dashboard_blti.group_dashboard_blti_management"/>
+            groups="dashboard_blti.group_dashboard_management"/>
 
   <menuitem id="menu_dashboard_blti_sales"
             name="Monitoring Sales"
             parent="menu_dashboard_blti_root"
             action="dashboard_blti.action_dashboard_blti_sales"
             sequence="20"
-            groups="dashboard_blti.group_dashboard_blti_management"/>
+            groups="dashboard_blti.group_dashboard_management"/>
 
   <menuitem id="menu_dashboard_blti_inventory"
             name="Monitoring Inventory"
             parent="menu_dashboard_blti_root"
             action="dashboard_blti.action_dashboard_blti_inventory"
             sequence="30"
-            groups="dashboard_blti.group_dashboard_blti_management"/>
+            groups="dashboard_blti.group_dashboard_management"/>
 </odoo>

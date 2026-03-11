@@ -1,0 +1,316 @@
+// ─────────────────────────────────────────────────────
+// BLTI Management Dashboard — Stylesheet
+// ─────────────────────────────────────────────────────
+
+.mgmt_dashboard {
+  padding: 20px;
+  background: #F1F3F7;
+  min-height: 100vh;
+}
+
+// ── HEADER ──────────────────────────────────────────
+
+.mgmt_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
+}
+
+.mgmt_header_left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mgmt_title {
+  font-size: 26px;
+  font-weight: 800;
+  margin: 0;
+  color: #1C1C2E;
+  letter-spacing: -0.5px;
+}
+
+.mgmt_subtitle {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.mgmt_period_select {
+  width: 200px;
+  border-radius: 8px !important;
+}
+
+// ── PERIOD BADGE ────────────────────────────────────
+
+.mgmt_period_badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  background: #fff;
+  padding: 6px 14px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+// ── LOADING ─────────────────────────────────────────
+
+.mgmt_loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 60px 0;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 14px;
+}
+
+.mgmt_spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(113, 75, 103, 0.15);
+  border-top-color: #714B67;
+  border-radius: 50%;
+  animation: mgmt_spin 0.7s linear infinite;
+}
+
+@keyframes mgmt_spin {
+  to { transform: rotate(360deg); }
+}
+
+// ── SECTION ─────────────────────────────────────────
+
+.mgmt_section {
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.mgmt_section_header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 20px;
+  border-left: 4px solid transparent;
+}
+
+.mgmt_section_icon {
+  font-size: 19px;
+  line-height: 1;
+}
+
+.mgmt_section_title {
+  font-size: 15px;
+  font-weight: 700;
+  flex: 1;
+  letter-spacing: -0.2px;
+}
+
+.mgmt_section_pill {
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.05);
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-family: monospace;
+  letter-spacing: 0;
+}
+
+// ── SECTION COLOR THEMES ────────────────────────────
+
+.mgmt_hdr_sales {
+  border-left-color: #3B82F6;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  .mgmt_section_title { color: #1D4ED8; }
+}
+
+.mgmt_hdr_purchase {
+  border-left-color: #F59E0B;
+  background: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  .mgmt_section_title { color: #B45309; }
+}
+
+.mgmt_hdr_inventory {
+  border-left-color: #10B981;
+  background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+  .mgmt_section_title { color: #047857; }
+}
+
+.mgmt_hdr_invoice {
+  border-left-color: #8B5CF6;
+  background: linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%);
+  .mgmt_section_title { color: #6D28D9; }
+}
+
+.mgmt_hdr_project {
+  border-left-color: #F97316;
+  background: linear-gradient(135deg, #FFF7ED 0%, #FFEDD5 100%);
+  .mgmt_section_title { color: #C2410C; }
+}
+
+.mgmt_hdr_expenses {
+  border-left-color: #F43F5E;
+  background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);
+  .mgmt_section_title { color: #BE123C; }
+}
+
+// ── CARDS GRID ──────────────────────────────────────
+
+.mgmt_cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 14px 16px 16px;
+}
+
+// 6-column grid (project section)
+.mgmt_cards_6 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+// ── SINGLE CARD ─────────────────────────────────────
+
+.mgmt_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 10px 14px;
+  border-radius: 10px;
+  background: #FAFAFA;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  transition: all 0.15s ease;
+  text-align: center;
+  min-height: 100px;
+}
+
+.mgmt_card_clickable {
+  cursor: pointer;
+
+  &:hover {
+    background: #F0F4FF;
+    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.12);
+  }
+}
+
+// Warning card (late / overdue)
+.mgmt_card_warn {
+  background: #FFF8F5;
+  border-color: rgba(249, 115, 22, 0.2);
+
+  .mgmt_card_value { color: #EA580C; }
+  .mgmt_card_label { color: rgba(194, 65, 12, 0.7); }
+
+  &.mgmt_card_clickable:hover {
+    background: #FFF0EB;
+    border-color: rgba(234, 88, 12, 0.4);
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.12);
+  }
+}
+
+// ── CARD ICON ───────────────────────────────────────
+
+.mgmt_card_top {
+  margin-bottom: 6px;
+}
+
+.mgmt_card_ico {
+  font-size: 20px;
+  opacity: 0.75;
+}
+
+// Colored icon backgrounds
+.mgmt_ico_blue   { filter: hue-rotate(0deg); }
+.mgmt_ico_amber  { filter: sepia(1) saturate(3) hue-rotate(5deg); }
+.mgmt_ico_green  { filter: sepia(1) saturate(3) hue-rotate(80deg); }
+.mgmt_ico_violet { filter: sepia(1) saturate(3) hue-rotate(230deg); }
+.mgmt_ico_orange { filter: sepia(1) saturate(3) hue-rotate(340deg); }
+.mgmt_ico_rose   { filter: sepia(1) saturate(3) hue-rotate(295deg); }
+
+// ── CARD VALUES ─────────────────────────────────────
+
+.mgmt_card_value {
+  font-size: 34px;
+  font-weight: 800;
+  color: #1C1C2E;
+  line-height: 1.05;
+  letter-spacing: -1px;
+}
+
+// Smaller value (currency / long number)
+.mgmt_val_sm {
+  font-size: 17px;
+  letter-spacing: -0.3px;
+}
+
+// Percentage value
+.mgmt_val_pct {
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+.mgmt_card_label {
+  margin-top: 5px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+// ── UNAVAILABLE PLACEHOLDER ─────────────────────────
+
+.mgmt_unavailable {
+  padding: 24px 20px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.38);
+  font-size: 13px;
+  border-top: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+// ── RESPONSIVE ──────────────────────────────────────
+
+@media (max-width: 1200px) {
+  .mgmt_cards_6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .mgmt_cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mgmt_cards_6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mgmt_header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .mgmt_period_select {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .mgmt_cards,
+  .mgmt_cards_6 {
+    grid-template-columns: 1fr 1fr;
+  }
+}

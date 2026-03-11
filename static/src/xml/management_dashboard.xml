@@ -1,0 +1,427 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="dashboard_blti.ManagementDashboard">
+    <div class="mgmt_dashboard">
+
+      <!-- ── HEADER ── -->
+      <div class="mgmt_header">
+        <div class="mgmt_header_left">
+          <h1 class="mgmt_title">Management Dashboard</h1>
+          <span class="mgmt_subtitle">Ringkasan operasional seluruh divisi</span>
+        </div>
+        <div class="mgmt_header_right">
+          <select class="form-select mgmt_period_select" t-on-change="onChangePeriod" t-att-value="state.period">
+            <option value="last_7_days">Last 7 Days</option>
+            <option value="last_30_days">Last 30 Days</option>
+            <option value="last_90_days">Last 90 Days</option>
+            <option value="this_month">This Month</option>
+            <option value="this_year">This Year</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ── LOADING ── -->
+      <t t-if="state.loading">
+        <div class="mgmt_loading">
+          <div class="mgmt_spinner"/>
+          <span>Memuat data...</span>
+        </div>
+      </t>
+
+      <!-- ── GLOBAL ERROR ── -->
+      <t t-elif="state.error">
+        <div class="alert alert-danger mt-3" role="alert">
+          <strong>Error:</strong>
+          <t t-esc="state.error"/>
+        </div>
+      </t>
+
+      <!-- ── SECTIONS ── -->
+      <t t-else="">
+
+        <!-- period badge -->
+        <div class="mgmt_period_badge">
+          <span>📅</span>
+          <t t-esc="state.data.period.date_from"/>
+          <span> — </span>
+          <t t-esc="state.data.period.date_to"/>
+        </div>
+
+        <!-- ════════════ SALES ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_sales">
+            <span class="mgmt_section_icon">💼</span>
+            <span class="mgmt_section_title">Sales</span>
+            <span class="mgmt_section_pill">sale.order</span>
+          </div>
+          <div class="mgmt_cards">
+
+            <div class="mgmt_card mgmt_card_clickable" t-on-click="openSalesQuotations">
+              <div class="mgmt_card_top">
+                <span class="mgmt_card_ico mgmt_ico_blue">📄</span>
+              </div>
+              <div class="mgmt_card_value">
+                <t t-esc="state.data.sales.quotations"/>
+              </div>
+              <div class="mgmt_card_label">Quotations</div>
+            </div>
+
+            <div class="mgmt_card mgmt_card_clickable" t-on-click="openSalesOrders">
+              <div class="mgmt_card_top">
+                <span class="mgmt_card_ico mgmt_ico_blue">✅</span>
+              </div>
+              <div class="mgmt_card_value">
+                <t t-esc="state.data.sales.orders"/>
+              </div>
+              <div class="mgmt_card_label">Orders</div>
+            </div>
+
+            <div class="mgmt_card">
+              <div class="mgmt_card_top">
+                <span class="mgmt_card_ico mgmt_ico_blue">💰</span>
+              </div>
+              <div class="mgmt_card_value mgmt_val_sm">
+                <t t-esc="(state.data.sales.revenue || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+              </div>
+              <div class="mgmt_card_label">Revenue</div>
+            </div>
+
+            <div class="mgmt_card">
+              <div class="mgmt_card_top">
+                <span class="mgmt_card_ico mgmt_ico_blue">📊</span>
+              </div>
+              <div class="mgmt_card_value mgmt_val_sm">
+                <t t-esc="(state.data.sales.avg_order || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+              </div>
+              <div class="mgmt_card_label">Avg Order</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ════════════ PURCHASE ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_purchase">
+            <span class="mgmt_section_icon">🛒</span>
+            <span class="mgmt_section_title">Purchase</span>
+            <span class="mgmt_section_pill">purchase.order</span>
+          </div>
+
+          <t t-if="!state.data.purchase.available">
+            <div class="mgmt_unavailable">
+              ⚠️ Module Purchase tidak tersedia atau tidak terinstall.
+            </div>
+          </t>
+          <t t-else="">
+            <div class="mgmt_cards">
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openPurchaseRFQ">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_amber">📋</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.purchase.rfq"/>
+                </div>
+                <div class="mgmt_card_label">RFQ</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openPurchaseOrders">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_amber">🧾</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.purchase.orders"/>
+                </div>
+                <div class="mgmt_card_label">Purchase Orders</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_amber">💸</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="(state.data.purchase.total_spent || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+                </div>
+                <div class="mgmt_card_label">Total Spent</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_warn mgmt_card_clickable" t-on-click="openOverduePO">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico">⏰</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.purchase.overdue"/>
+                </div>
+                <div class="mgmt_card_label">Overdue PO</div>
+              </div>
+
+            </div>
+          </t>
+        </div>
+
+        <!-- ════════════ INVENTORY ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_inventory">
+            <span class="mgmt_section_icon">📦</span>
+            <span class="mgmt_section_title">Inventory</span>
+            <span class="mgmt_section_pill">stock (all-time)</span>
+          </div>
+
+          <t t-if="!state.data.inventory.available">
+            <div class="mgmt_unavailable">
+              ⚠️ Module Inventory tidak tersedia atau tidak terinstall.
+            </div>
+          </t>
+          <t t-else="">
+            <div class="mgmt_cards">
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openDeliveryOrders">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_green">🚚</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.inventory.delivery_done"/>
+                </div>
+                <div class="mgmt_card_label">Delivery Done</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_green">📥</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.inventory.receipt_done"/>
+                </div>
+                <div class="mgmt_card_label">Receipt Done</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_green">🏭</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="state.data.inventory.stock_value_display"/>
+                </div>
+                <div class="mgmt_card_label">Stock Value</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_warn mgmt_card_clickable" t-on-click="openLateDeliveries">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico">⚠️</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.inventory.delivery_late"/>
+                </div>
+                <div class="mgmt_card_label">Delivery Late</div>
+              </div>
+
+            </div>
+          </t>
+        </div>
+
+        <!-- ════════════ INVOICE / ACCOUNTING ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_invoice">
+            <span class="mgmt_section_icon">🧾</span>
+            <span class="mgmt_section_title">Invoice / Accounting</span>
+            <span class="mgmt_section_pill">account.move</span>
+          </div>
+
+          <t t-if="!state.data.invoice.available">
+            <div class="mgmt_unavailable">
+              ⚠️ Module Accounting tidak tersedia atau tidak terinstall.
+            </div>
+          </t>
+          <t t-else="">
+            <div class="mgmt_cards">
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openInvoices">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_violet">📤</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.invoice.invoices"/>
+                </div>
+                <div class="mgmt_card_label">Invoices</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openBills">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_violet">📨</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.invoice.bills"/>
+                </div>
+                <div class="mgmt_card_label">Bills</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_violet">💳</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="(state.data.invoice.receivable || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+                </div>
+                <div class="mgmt_card_label">A/R Outstanding</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_warn mgmt_card_clickable" t-on-click="openOverdueInvoices">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico">🔴</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.invoice.overdue"/>
+                </div>
+                <div class="mgmt_card_label">Overdue</div>
+              </div>
+
+            </div>
+          </t>
+        </div>
+
+        <!-- ════════════ PROJECT ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_project">
+            <span class="mgmt_section_icon">📋</span>
+            <span class="mgmt_section_title">Project</span>
+            <span class="mgmt_section_pill">project.task</span>
+          </div>
+
+          <t t-if="!state.data.project.available">
+            <div class="mgmt_unavailable">
+              ⚠️ Module Project tidak tersedia atau tidak terinstall.
+            </div>
+          </t>
+          <t t-else="">
+            <div class="mgmt_cards mgmt_cards_6">
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openProjects">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_orange">🗂</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.project.project_count"/>
+                </div>
+                <div class="mgmt_card_label">Active Projects</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_orange">✔️</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.project.project_done"/>
+                </div>
+                <div class="mgmt_card_label">Projects Done</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openTasks">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_orange">📝</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.project.task_count"/>
+                </div>
+                <div class="mgmt_card_label">Open Tasks</div>
+              </div>
+
+              <div class="mgmt_card mgmt_card_warn mgmt_card_clickable" t-on-click="openOverdueTasks">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico">⚠️</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.project.task_overdue"/>
+                </div>
+                <div class="mgmt_card_label">Overdue Tasks</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_orange">📈</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_pct">
+                  <t t-esc="state.data.project.completion"/>
+                </div>
+                <div class="mgmt_card_label">Completion</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_orange">🏁</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_pct">
+                  <t t-esc="state.data.project.on_time_rate"/>
+                </div>
+                <div class="mgmt_card_label">On-Time Rate</div>
+              </div>
+
+            </div>
+          </t>
+        </div>
+
+        <!-- ════════════ EXPENSES ════════════ -->
+        <div class="mgmt_section">
+          <div class="mgmt_section_header mgmt_hdr_expenses">
+            <span class="mgmt_section_icon">💸</span>
+            <span class="mgmt_section_title">Expenses</span>
+            <span class="mgmt_section_pill">hr.expense</span>
+          </div>
+
+          <t t-if="!state.data.expenses.available">
+            <div class="mgmt_unavailable">
+              ⚠️ Module Expenses tidak tersedia atau tidak terinstall.
+            </div>
+          </t>
+          <t t-else="">
+            <div class="mgmt_cards">
+
+              <div class="mgmt_card mgmt_card_clickable" t-on-click="openExpenses">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_rose">🧮</span>
+                </div>
+                <div class="mgmt_card_value">
+                  <t t-esc="state.data.expenses.total_count"/>
+                </div>
+                <div class="mgmt_card_label">Total Expenses</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_rose">💰</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="(state.data.expenses.total_amount || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+                </div>
+                <div class="mgmt_card_label">Total Amount</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_rose">🔍</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="(state.data.expenses.to_validate || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+                </div>
+                <div class="mgmt_card_label">To Validate</div>
+              </div>
+
+              <div class="mgmt_card">
+                <div class="mgmt_card_top">
+                  <span class="mgmt_card_ico mgmt_ico_rose">💳</span>
+                </div>
+                <div class="mgmt_card_value mgmt_val_sm">
+                  <t t-esc="(state.data.expenses.to_reimburse || 0).toLocaleString('id-ID', {maximumFractionDigits: 0})"/>
+                </div>
+                <div class="mgmt_card_label">To Reimburse</div>
+              </div>
+
+            </div>
+          </t>
+        </div>
+
+      </t>
+    </div>
+  </t>
+
+</templates>

@@ -1,2 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_blti_dashboard_service,access_blti_dashboard_service,model_blti_dashboard_service,dashboard_blti.group_dashboard_management,1,0,0,0
+access_blti_management_service,access_blti_management_service,model_blti_management_service,dashboard_blti.group_dashboard_management,1,0,0,0
+access_blti_management_service,access_blti_management_service,model_blti_management_service,dashboard_blti.group_dashboard_management,1,0,0,0
