@@ -1,0 +1,80 @@
+.blti_dashboard {
+  padding: 16px;
+}
+
+.blti_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--o-view-background-color, #fff);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  border: 1px solid rgba(0,0,0,.06);
+}
+
+.blti_title {
+  font-size: 28px;
+  margin: 0;
+}
+
+.blti_period {
+  width: 220px;
+}
+
+.blti_loading {
+  padding: 24px;
+}
+
+.blti_cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.blti_card {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 8px;
+  padding: 22px 18px;
+  text-align: center;
+}
+
+.blti_card.clickable {
+  cursor: pointer;
+}
+
+.blti_card.clickable:hover {
+  border-color: rgba(0,0,0,.18);
+}
+
+.blti_card_value {
+  font-size: 44px;
+  font-weight: 600;
+  line-height: 1.1;
+}
+
+.blti_card_label {
+  margin-top: 8px;
+  color: rgba(0,0,0,.6);
+}
+
+.blti_section {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.06);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.blti_section_title {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.blti_placeholder {
+  padding: 18px;
+  border: 1px dashed rgba(0,0,0,.18);
+  border-radius: 8px;
+  color: rgba(0,0,0,.55);
+}

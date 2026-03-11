@@ -1,0 +1,5 @@
+<odoo>
+    <record id="group_dashboard_management" model="res.groups">
+        <field name="name">Dashboard Management</field>
+    </record>
+</odoo>

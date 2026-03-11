@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="dashboard_blti.ExecutiveDashboard">
+    <div class="blti_dashboard">
+
+      <!-- Header -->
+      <div class="blti_header">
+        <h1 class="blti_title">Executive Dashboard</h1>
+
+        <div class="blti_period">
+          <select class="form-select" t-on-change="onChangePeriod" t-att-value="state.period">
+            <option value="last_7_days">Last 7 Days</option>
+            <option value="last_30_days">Last 30 Days</option>
+            <option value="last_90_days">Last 90 Days</option>
+            <option value="this_month">This Month</option>
+            <option value="this_year">This Year</option>
+          </select>
+        </div>
+      </div>
+
+      <t t-if="state.loading">
+        <div class="blti_loading">Loading...</div>
+      </t>
+
+      <t t-else="">
+      
+      <t t-if="state.error">
+  <div class="alert alert-danger" role="alert">
+    <t t-esc="state.error"/>
+  </div>
+</t>
+
+        <!-- Cards -->
+        <div class="blti_cards">
+          <div class="blti_card clickable" t-on-click="openQuotations">
+            <div class="blti_card_value">
+              <t t-esc="state.data.cards.quotations.value"/>
+            </div>
+            <div class="blti_card_label">Quotations</div>
+          </div>
+
+          <div class="blti_card clickable" t-on-click="openOrders">
+            <div class="blti_card_value">
+              <t t-esc="state.data.cards.orders.value"/>
+            </div>
+            <div class="blti_card_label">Orders</div>
+          </div>
+
+          <div class="blti_card">
+            <div class="blti_card_value">
+              <t t-esc="(state.data.cards.revenue.value || 0).toLocaleString()"/>
+            </div>
+            <div class="blti_card_label">Revenue (SO)</div>
+          </div>
+
+          <div class="blti_card">
+            <div class="blti_card_value">
+              <t t-esc="(state.data.cards.avg_order.value || 0).toLocaleString()"/>
+            </div>
+            <div class="blti_card_label">Average Order</div>
+          </div>
+        </div>
+
+        <!-- Placeholder section for charts (next step) -->
+        <div class="blti_section">
+          <div class="blti_section_title">Trends</div>
+          <div class="blti_placeholder">
+            (Next) Monthly chart goes here — setelah KPI jalan, kita tambah chart.
+          </div>
+        </div>
+
+      </t>
+    </div>
+  </t>
+
+</templates>
